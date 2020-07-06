@@ -22,15 +22,15 @@ app.get("/api/notes", function (req, res) {
   return res.json(db);
 });
 
+//api requests
+app.post("/api/notes", function (req, res) {
+  res.json(req.body);
+  db.push(req.body);
+});
+
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
-
-//api requests
-app.post("/api/notes", function(req, res) {
-    db.push(req.body);
-    res.json(req.body)
-})
 
 app.listen(PORT, (req, res) => {
   console.log(`Currently running on http://localhost:${PORT}`);
