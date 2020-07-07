@@ -28,6 +28,14 @@ app.post("/api/notes", function (req, res) {
   db.push(req.body);
 });
 
+app.delete("/api/notes/:id", function (req, res) {
+    res.send('Got a DELETE request at /user')
+});
+
+/* app.delete('/user', function (req, res) {
+    res.send('Got a DELETE request at /user')
+  }) */
+
 app.get("*", function (req, res) {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
