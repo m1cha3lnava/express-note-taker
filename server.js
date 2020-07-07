@@ -24,8 +24,16 @@ app.get("/api/notes", function (req, res) {
 
 //api requests
 app.post("/api/notes", function (req, res) {
-  res.json(req.body);
-  db.push(req.body);
+    console.log(req.body);
+    db.push({
+        title: req.body.title,
+        text: req.body.text,
+        id: id++
+    })
+    //looked up npm package to assign ids
+//   res.json(req.body);
+//   db.push(req.body);
+//   title: 'as,djfh', text: 'adlkfjalsd'
 });
 
 app.delete("/api/notes/:id", function (req, res) {
