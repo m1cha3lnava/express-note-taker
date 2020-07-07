@@ -25,20 +25,24 @@ app.get("/api/notes", function (req, res) {
 //api requests
 app.post("/api/notes", function (req, res) {
   console.log(req.body);
-
+  res.json(req.body);
   db.push({
     title: req.body.title,
     text: req.body.text,
-    id: newID,
+    id: db.length,
   });
-  //looked up npm package to assign random ids
-  //   res.json(req.body);
-  //   db.push(req.body);
-  //   title: 'as,djfh', text: 'adlkfjalsd'
+  console.log(db);
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-  res.send("Got a DELETE request at /user");
+  // res.send("Got a DELETE request");
+  const noteIndex = db.findIndex(function (note) {
+    return note.id === req.params.id;
+  });
+  // let arrDeletedItems = array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
+  db.splice(noteIndex, 1);
+  res.end();
+  //  if (req.params.id === db.id)
 });
 
 /* app.delete('/user', function (req, res) {
