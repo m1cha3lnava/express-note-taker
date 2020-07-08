@@ -25,6 +25,7 @@ app.get("/api/notes", function (req, res) {
 
 //api requests
 app.post("/api/notes", function (req, res) {
+  console.log("req.body");
   console.log(req.body);
   // res.json(req.body);
   db.push({
@@ -32,11 +33,11 @@ app.post("/api/notes", function (req, res) {
     text: req.body.text,
     id: db.length,
   });
-  fs.writeFile("./db/db.json", JSON.stringify(req.body), (err, data) => {
+  fs.writeFile("./db/db.json", JSON.stringify(db), (err, data) => {
     if (err) throw err;
     res.json(req.body);
-})
-
+  });
+  console.log("db");
   console.log(db);
 });
 
