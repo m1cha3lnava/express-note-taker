@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
@@ -25,12 +26,17 @@ app.get("/api/notes", function (req, res) {
 //api requests
 app.post("/api/notes", function (req, res) {
   console.log(req.body);
-  res.json(req.body);
+  // res.json(req.body);
   db.push({
     title: req.body.title,
     text: req.body.text,
     id: db.length,
   });
+  fs.writeFile("./db/db.json", JSON.stringify(req.body), (err, data) => {
+    if (err) throw err;
+    res.json(req.body);
+})
+
   console.log(db);
 });
 
