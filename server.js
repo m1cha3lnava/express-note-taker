@@ -1,4 +1,5 @@
 const express = require("express");
+const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
@@ -23,33 +24,41 @@ app.get("/api/notes", function (req, res) {
 });
 
 //api requests
-app.post("/api/notes", function (req, res) {
+app.post("/api/notes", (req, res) => {
+  console.log("req.body");
   console.log(req.body);
-  res.json(req.body);
+  // res.json(req.body);
   db.push({
     title: req.body.title,
     text: req.body.text,
     id: db.length,
   });
+  fs.writeFile("./db/db.json", JSON.stringify(db), (err, data) => {
+    if (err) throw err;
+    res.json(req.body);
+  });
+  console.log("db");
   console.log(db);
 });
 
-app.delete("/api/notes/:id", function (req, res) {
+app.delete("/api/notes/:id", (req, res) => {
   // res.send("Got a DELETE request");
-  const noteIndex = db.findIndex(function (note) {
+  let noteIndex = req.params.id - 1;
+  /*   const noteIndex = db.findIndex(function (note) {
     return note.id === req.params.id;
-  });
+  }); */
   // let arrDeletedItems = array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
-  db.splice(noteIndex, 1);
-  res.end();
-  //  if (req.params.id === db.id)
+  // db.splice(noteIndex, 1);
+  // res.end();
+  console.log("noteIndex " + noteIndex);
+  console.log("params id " + req.params.id);
 });
 
 /* app.delete('/user', function (req, res) {
     res.send('Got a DELETE request at /user')
   }) */
 
-app.get("*", function (req, res) {
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
