@@ -37,25 +37,27 @@ app.post("/api/notes", (req, res) => {
     if (err) throw err;
     res.json(req.body);
   });
-  // console.log("db");
-  // console.log(db);
+  console.log("db");
+  console.log(db);
 });
 
 app.delete("/api/notes/:id", (req, res) => {
   // console.log(req.params);
-  const buttonID = parseInt(req.params.id);
-  // console.log(buttonID);
-  fs.readFile("./db/db.json", "utf8", function (err, data) {
+  const buttonID = parseInt(req.params.id)
+  console.log(buttonID);
+
+  fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
     if (err) throw err;
     const arrayOfNotes = JSON.parse(data);
-    let newNoteArray = arrayOfNotes.filter(function (paramNotes) {
-      return paramNotes.id !== buttonID;
+    let filteredArrayOfNotes = arrayOfNotes.filter(function (objNotes) {
+        return objNotes.id !== buttonID;        
     });
-    fs.writeFile("./db/db.json", JSON.stringify(newNoteArray), (err) => {
-      if (err) throw err;
-      res.json(newNoteArray);
+    fs.writeFile(__dirname + "/db/db.json", JSON.stringify(filteredArrayOfNotes), (err) => {
+        if (err) throw err;
+        res.json(filteredArrayOfNotes);
+        
     });
-  });
+})    
 });
 
 /* app.delete('/user', function (req, res) {
