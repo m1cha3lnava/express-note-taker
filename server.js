@@ -25,8 +25,8 @@ app.get("/api/notes", function (req, res) {
 
 //api requests
 app.post("/api/notes", (req, res) => {
-  console.log("req.body");
-  console.log(req.body);
+  // console.log("req.body");
+  // console.log(req.body);
   // res.json(req.body);
   db.push({
     title: req.body.title,
@@ -37,21 +37,25 @@ app.post("/api/notes", (req, res) => {
     if (err) throw err;
     res.json(req.body);
   });
-  console.log("db");
-  console.log(db);
+  // console.log("db");
+  // console.log(db);
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-  // res.send("Got a DELETE request");
-  let noteIndex = req.params.id - 1;
-  /*   const noteIndex = db.findIndex(function (note) {
-    return note.id === req.params.id;
-  }); */
-  // let arrDeletedItems = array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
-  // db.splice(noteIndex, 1);
-  // res.end();
-  console.log("noteIndex " + noteIndex);
-  console.log("params id " + req.params.id);
+  // console.log(req.params);
+  const buttonID = parseInt(req.params.id);
+  // console.log(buttonID);
+  fs.readFile("./db/db.json", "utf8", function (err, data) {
+    if (err) throw err;
+    const arrayOfNotes = JSON.parse(data);
+    let newNoteArray = arrayOfNotes.filter(function (paramNotes) {
+      return paramNotes.id !== buttonID;
+    });
+    fs.writeFile("./db/db.json", JSON.stringify(newNoteArray), (err) => {
+      if (err) throw err;
+      res.json(newNoteArray);
+    });
+  });
 });
 
 /* app.delete('/user', function (req, res) {
