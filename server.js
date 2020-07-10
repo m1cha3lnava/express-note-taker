@@ -4,6 +4,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
 const db = require("./db/db");
+const { notStrictEqual } = require("assert");
+const { parse } = require("path");
 
 app.use(express.static("public"));
 
@@ -24,45 +26,68 @@ app.get("/api/notes", function (req, res) {
 });
 
 //api requests
+let noteIncrement = 0;
 app.post("/api/notes", (req, res) => {
   // console.log("req.body");
   // console.log(req.body);
   // res.json(req.body);
-  db.push({
-    title: req.body.title,
-    text: req.body.text,
-    id: db.length,
-  });
-  fs.writeFile("./db/db.json", JSON.stringify(db), (err, data) => {
+  noteIncrement++;
+  req.body.id = noteIncrement;
+  db.push(req.body);
+  return res.json(db);
+  /* fs.writeFile("./db/db.json", JSON.stringify(db), (err, data) => {
     if (err) throw err;
     res.json(req.body);
-  });
-  console.log("db");
-  console.log(db);
+  }); */
 });
 
 app.delete("/api/notes/:id", (req, res) => {
-  // console.log(req.params);
-  const buttonID = parseInt(req.params.id)
-  console.log(buttonID);
+  // console.log("db: " + db)
+  let noteToDelete = parseInt(req.params.id)
+  console.log("noteDelete: " + noteToDelete);
+  console.log("id: " + db[req.params.id].id);
+  // console.log("title: " + db[req.params.id].title);
+  // console.log("text: " + db[req.params.id].text);
+  
+ let filteredNotes = db.filter(notes => {
+    console.log(db[noteToDelete]) 
+  }
+  )
+  console.log(filteredNotes);
+  // console.log(filteredNotes);
+  res.json(db);
+  // console.log(typeof req.params.id)
+  // console.log(db[0].id)
+  /* function checkAdult(age) {
+  return age >= 18;
+}
 
-  fs.readFile(__dirname + "/db/db.json", "utf8", function (err, data) {
+function myFunction() {
+ databaseL = ages.filter(checkAdult);
+}   */
+  /* pass a function to map
+const map1 = array1.map(x => x * 2); */
+  // console.log(db);
+  
+
+  // console.log("id: " + req.params.id);
+  // let noteId = req.params.id;
+  // console.log("noteID: " + noteId);
+  // console.log(db);
+  // res.json(db);
+  //  console.log("delete");
+  /* fs.readFile("./db/db.json", "utf8", function (err, data) {
     if (err) throw err;
     const arrayOfNotes = JSON.parse(data);
-    let filteredArrayOfNotes = arrayOfNotes.filter(function (objNotes) {
-        return objNotes.id !== buttonID;        
+    let newNoteArray = arrayOfNotes.filter(function (paramNotes) {
+      return paramNotes.id !== buttonID;
     });
-    fs.writeFile(__dirname + "/db/db.json", JSON.stringify(filteredArrayOfNotes), (err) => {
-        if (err) throw err;
-        res.json(filteredArrayOfNotes);
-        
+    fs.writeFile("./db/db.json", JSON.stringify(newNoteArray), (err) => {
+      if (err) throw err;
+      res.json(newNoteArray);
     });
-})    
+  }); */
 });
-
-/* app.delete('/user', function (req, res) {
-    res.send('Got a DELETE request at /user')
-  }) */
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "./public/index.html"));
