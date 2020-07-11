@@ -7,12 +7,21 @@
 
   ## Table of contents
 
+<<<<<<< HEAD
+  *  [Installation] (#installation)
+  *  [Usage] (#usage)
+  *  [License] (#license)
+  *  [Contributing] (#contributing)
+  *  [Tests] (#tests)
+  *  [Questions] (#questions)
+=======
   * [Installation] (#installation)
   * [Usage] (#usage)
   * [License] (#license)
   * [Contributing] (#contributing)
   * [Tests] (#tests)
   * [Questions] (#questions)
+>>>>>>> 6b44e5274e06b5c2816ec83f3ff5ddfff2355279
   
   ## Installation
   To install necessary dependencies, run the following command:
