@@ -3,7 +3,7 @@ const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const path = require("path");
-const db = require("./db/db");
+let db = require("./db/db");
 const { notStrictEqual } = require("assert");
 const { parse } = require("path");
 
@@ -43,18 +43,17 @@ app.post("/api/notes", (req, res) => {
 
 app.delete("/api/notes/:id", (req, res) => {
   // console.log("db: " + db)
-  let noteToDelete = parseInt(req.params.id)
-  console.log("noteDelete: " + noteToDelete);
-  console.log("id: " + db[req.params.id].id);
+  let noteToDelete = +(req.params.id)
+  // console.log("noteDelete: " + noteToDelete);
+  // console.log("id: " + db[req.params.id].id);
   // console.log("title: " + db[req.params.id].title);
   // console.log("text: " + db[req.params.id].text);
   
- let filteredNotes = db.filter(notes => {
-    console.log(db[noteToDelete]) 
-  }
+ let filteredNotes = db.filter(notes => !(notes.id == noteToDelete)
   )
-  console.log(filteredNotes);
+  console.log({filteredNotes,noteToDelete});
   // console.log(filteredNotes);
+  db = filteredNotes;
   res.json(db);
   // console.log(typeof req.params.id)
   // console.log(db[0].id)
